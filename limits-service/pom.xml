@@ -72,5 +72,19 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<config.server.profile>dev</config.server.profile>
+			</properties>
+		</profile>
 
+		<profile>
+			<id>qa</id>
+			<properties>
+				<config.server.profile>qa</config.server.profile>
+			</properties>
+		</profile>
+	</profiles>
 </project>
