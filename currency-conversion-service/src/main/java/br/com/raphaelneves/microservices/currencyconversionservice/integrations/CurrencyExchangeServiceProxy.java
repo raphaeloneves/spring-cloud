@@ -1,11 +1,13 @@
 package br.com.raphaelneves.microservices.currencyconversionservice.integrations;
 
 import br.com.raphaelneves.microservices.currencyconversionservice.beans.CurrencyConversion;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "currency-exchange-service", url = "localhost:8000")
+@FeignClient("currency-exchange-service")
+@RibbonClient("currency-exchange-service")
 public interface CurrencyExchangeServiceProxy {
     String BASE_SERVICE_URL = "currency-exchange";
 
