@@ -26,7 +26,7 @@ public class CurrencyExchangeResource {
     }
 
     @GetMapping(value = "/from/{from}/to/{to}")
-    public ExchangeValue calculateCurrencyFromTo(@PathVariable String from, @PathVariable String to){
+    public ExchangeValue getCurrencyExchangeFromTo(@PathVariable String from, @PathVariable String to){
         ExchangeValue exchangeValue = service.getCurrencyFromTo(from.toUpperCase(), to.toUpperCase());
         if(Objects.isNull(exchangeValue))
             throw new CurrencyNotFoundException("Currency exchange " + from + " -> " + to + " not found");
