@@ -18,6 +18,7 @@ public class CurrencyConversionService {
     }
 
     public CurrencyConversion converteCurrencyFromTo(String from, String to, BigDecimal amount){
+        consumer.validateLimitBeforeExchange(amount);
         CurrencyConversion currencyConversion = consumer.applyCurrencyExchange(from, to);
         currencyConversion.setAmount(amount);
         currencyConversion.setConversionDate(new Date());

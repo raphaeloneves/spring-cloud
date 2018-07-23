@@ -1,12 +1,14 @@
 package br.com.raphaelneves.microservices.limitsservice;
 
-import br.com.raphaelneves.microservices.limitsservice.bean.Limit;
 import br.com.raphaelneves.microservices.limitsservice.config.LimitConfiguration;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import br.com.raphaelneves.microservices.limitsservice.exceptions.LimitBoundaryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping(value = "/limits")
@@ -19,19 +21,10 @@ public class LimitsResource {
         this.configuration = configuration;
     }
 
-    @GetMapping(value = "")
-    public Limit getLimitsConfiguration(){
-        return new Limit(configuration.getMinimum(), configuration.getMaximum());
+    @GetMapping(value = "/validate/{amount}")
+    public boolean validateOperationLimit(@PathVariable(value = "amount") BigDecimal amount){
+        boolean isValid = configuration.getMinimum().compareTo(amount) <= 0 && configuration.getMaximum().compareTo(amount) >= 0;
+        if(!isValid) throw new LimitBoundaryException("The amount must be between " + configuration.getMinimum() + " and " + configuration.getMaximum());
+        return isValid;
     }
-
-    @GetMapping(value = "/fault")
-    @HystrixCommand(fallbackMethod = "faultRetrieve")
-    public Limit getLimitsConfigurationWithFault(){
-        throw new RuntimeException("Service cannot be reached.");
-    }
-
-    private final Limit faultRetrieve(){
-        return new Limit(9, 999);
-    }
-
 }
