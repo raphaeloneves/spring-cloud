@@ -1,0 +1,114 @@
+EJB
+
+Stateless Session Bean
+
+- used to independent operations and does not keep user/transactional state.
+- may preserve the instance state.
+- container creates a pool of stateless bean that remains active during application execution. These instances are accessed on demand.
+- a client request can be processed by different beans during the same session, according to the pool availability.
+- they are thread safety.
+
+Stateful Session Bean
+
+- used to preserve the client conversactional/transactional state.
+- each client request is processed by the same session bean, because it keeps the association between user and session in instance variables.
+- it leaves until client session ends, that's why the lifecycle is considered shorter then a stateless bean.
+
+Message Driven Bean
+
+- its a kind of EJB that is invoked by the container when it receives a message from a topic or a queue.
+- its a stateless bean and its commonly used to process asynchronous tasks.
+
+Entity Bean
+
+- represents the data in a persistence context.
+
+Local Bean
+
+- its when the EJB is processed in the same environment as the container
+
+Remote Bean
+
+- its when the EJB is processed outside the container (remotely)
+
+Main differences between Stateless and Stateful Beans
+
+- container creates a separate stateful bean to process each clients request, keeping it alive until client scope ends.
+- container creates a pool of stateless beans to process clients request that are always available in the app, remaining active at the end of a client's request scope.
+- stateful keep conversational state and stateless not.
+
+What are the key components to integrate a persistence context in EJB
+
+- Entity: its an object that represents the recorded data. Should be serializable.
+- Entity Manager: its the persistence interface to do data operations, including transactional management in a BMT context.
+- Persistence Unit: describes the properties of the persistence mechanism.
+- Data Source: represent the properties needed to conect into a database system.
+
+@Stateless
+
+- used to define a stateless session bean.
+- can define a name and a JNDI name
+
+@Stateful
+
+- used to define a stateful session bean.
+- can define a name and a JNDI name
+
+@EJB
+
+- annotation used to handle the dependency injection of EJB's in others EJB's.
+- can specify injection attributes like: name used to locate the bean, injected interface bean type
+
+@PostActivate
+
+- used to define callback methods after the EJB activation/reactivaction
+
+Entity callbacks
+
+- can intercept entity based events and define specific method to each one.
+- events that can be intercepted: load, update, remove and persist
+
+How EJB implements dependecy injection
+
+- provides a set of annotations to handle the injection points.
+- these annotations can be used on setters methods or fields.
+- it uses the global JNDI name to locate de dependency.
+- the global JNDI name is defined and registered during application inicialization process. 
+
+@Embeddable
+
+- its an option to inject a plain object into an entity.
+- this mapping is done in the POJO object.
+
+@Embedded
+
+- defines de injection point of a embeddable resource
+
+What is transaction
+
+- single unit of work items that are processes following the ACID principle
+
+Define ACID principle
+
+- atomic: if one item fails, the unit is considered failed.
+- consistent: must keep system in a consistent state
+- isolated: each transaction is isolated of any others
+- durable: must keep system survive
+
+CMT
+
+- container is responsible to handle transactional lifecycle
+
+BMT
+
+- developer is responsible to handle transactional lifecycle
+
+CMT transactional types
+
+- required: a transactional context is mandatory. if there isn't an active transaction, container will create it
+- requires_new: a new transaction will always be created isolated
+- support: it can be executed into a transactional context or not.
+- not_supported: it cannot be executed as part of the transaction
+- mandatory: must be part of an active transaction, othewise an exception is thrown.
+
+ 
